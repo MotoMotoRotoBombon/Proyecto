@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getAllShippings() {
   try {
-    const url = import.meta.env.VITE_GET_ALL_INVENTORIES_URL;
+    const url = import.meta.env.VITE_POST_SHIPPING_URL;
 
     if (!url) {
       throw new Error("La URL de la API no está definida en el archivo de entorno.");

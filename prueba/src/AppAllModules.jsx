@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import CommerceRouter from "./navigation/NaviRoutesCommerce";
+import NaviRoutesShipping from "./navigation/NaviRoutesShipping";
 import Footer from "./share/footer/components/Footer";
 import {GET_DATA_START} from "./security/redux/thunks";
 import { useDispatch } from "react-redux";
@@ -25,7 +25,7 @@ export default function AppAllModules() {
 					<CommerceTable />
 				</div> } */}
 
-				<RouterProvider router={CommerceRouter} />
+				<RouterProvider router={NaviRoutesShipping} />
 				<div id='div-footer'>
 					<Footer />
 				</div>

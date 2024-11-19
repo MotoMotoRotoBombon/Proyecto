@@ -1,44 +1,62 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Dialog, DialogContent, DialogTitle, Typography, TextField, DialogActions, Box, Alert } from "@mui/material";
+import { InstituteValues } from "../../helpers/ShippingValues";
+import { AddOneInstitute } from "../../services/remote/post/AddOneShipping";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+  TextField,
+  DialogActions,
+  Box,
+  Alert,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
-import { AddOneShipping } from "../../../institutes/services/remote/post/AddOneShipping"; // Ajusta la ruta
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-const AddShippingModal = ({ AddShippingShowModal, setAddShippingShowModal }) => {
+const AddShippingModal = ({ AddInstituteShowModal, setAddInstituteShowModal }) => {
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      IdOK: "",
-      IdNegocio: "",
-      IdEntrega: "",
+      IdInstitutoOK: "",
+      IdNegocioOK: "",
+      IdEntregaOK: "",
       IdEntregaBK: "",
-      IdOrden: "",
+      IdOrdenOK: "",
+      Matriz: false,
     },
     validationSchema: Yup.object({
-      IdOK: Yup.string().required("Campo requerido"),
-      IdNegocio: Yup.string().required("Campo requerido"),
-      IdEntrega: Yup.string().required("Campo requerido"),
+      IdInstitutoOK: Yup.string().required("Campo requerido"),
+      IdNegocioOK: Yup.string().required("Campo requerido"),
+      IdEntregaOK: Yup.string().required("Campo requerido"),
       IdEntregaBK: Yup.string().required("Campo requerido"),
-      IdOrden: Yup.string().required("Campo requerido"),
+      IdOrdenOK: Yup.string().required("Campo requerido"),
+      Matriz: Yup.boolean(),
     }),
     onSubmit: async (values) => {
       setLoading(true);
       setMensajeErrorAlert(null);
       setMensajeExitoAlert(null);
 
+      // Conversión de Matriz a "S" o "N"
+      values.Matriz = values.Matriz ? "S" : "N";
+
       try {
-        await AddOneShipping(values); // Llama al servicio para guardar datos
-        setMensajeExitoAlert("El envío fue creado y guardado correctamente");
+        const Institute = InstituteValues(values);
+        await AddOneInstitute(Institute);
+        setMensajeExitoAlert("Instituto fue creado y guardado correctamente");
         formik.resetForm();
-      } catch (error) {
-        setMensajeErrorAlert("No se pudo crear el envío");
-        console.error("Error al crear el envío:", error);
+      } catch (e) {
+        setMensajeErrorAlert("No se pudo crear el Instituto");
+        console.error("Error al crear el Instituto:", e);
       } finally {
         setLoading(false);
       }
@@ -46,11 +64,11 @@ const AddShippingModal = ({ AddShippingShowModal, setAddShippingShowModal }) => 
   });
 
   return (
-    <Dialog open={AddShippingShowModal} onClose={() => setAddShippingShowModal(false)} fullWidth>
+    <Dialog open={AddInstituteShowModal} onClose={() => setAddInstituteShowModal(false)} fullWidth>
       <form onSubmit={formik.handleSubmit}>
         <DialogTitle>
           <Typography variant="h6" component="div">
-            <strong>Agregar Nuevo Envío</strong>
+            <strong>Agregar Nuevo Instituto</strong>
           </Typography>
         </DialogTitle>
         <DialogContent sx={{ display: "flex", flexDirection: "column" }} dividers>
@@ -66,47 +84,47 @@ const AddShippingModal = ({ AddShippingShowModal, setAddShippingShowModal }) => 
           )}
 
           <TextField
-            id="IdOK"
-            label="ID OK*"
-            value={formik.values.IdOK}
+            id="IdInstitutoOK"
+            label="IdInstitutoOK*"
+            value={formik.values.IdInstitutoOK}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             fullWidth
             margin="dense"
-            error={formik.touched.IdOK && Boolean(formik.errors.IdOK)}
-            helperText={formik.touched.IdOK && formik.errors.IdOK}
+            error={formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK)}
+            helperText={formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK}
             disabled={!!mensajeExitoAlert}
           />
 
           <TextField
-            id="IdNegocio"
-            label="ID Negocio*"
-            value={formik.values.IdNegocio}
+            id="IdNegocioOK"
+            label="IdNegocioOK*"
+            value={formik.values.IdNegocioOK}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             fullWidth
             margin="dense"
-            error={formik.touched.IdNegocio && Boolean(formik.errors.IdNegocio)}
-            helperText={formik.touched.IdNegocio && formik.errors.IdNegocio}
+            error={formik.touched.IdNegocioOK && Boolean(formik.errors.IdNegocioOK)}
+            helperText={formik.touched.IdNegocioOK && formik.errors.IdNegocioOK}
             disabled={!!mensajeExitoAlert}
           />
 
           <TextField
-            id="IdEntrega"
-            label="ID Entrega*"
-            value={formik.values.IdEntrega}
+            id="IdEntregaOK"
+            label="IdEntregaOK*"
+            value={formik.values.IdEntregaOK}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             fullWidth
             margin="dense"
-            error={formik.touched.IdEntrega && Boolean(formik.errors.IdEntrega)}
-            helperText={formik.touched.IdEntrega && formik.errors.IdEntrega}
+            error={formik.touched.IdEntregaOK && Boolean(formik.errors.IdEntregaOK)}
+            helperText={formik.touched.IdEntregaOK && formik.errors.IdEntregaOK}
             disabled={!!mensajeExitoAlert}
           />
 
           <TextField
             id="IdEntregaBK"
-            label="ID Entrega BK*"
+            label="IdEntregaBK*"
             value={formik.values.IdEntregaBK}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -118,38 +136,48 @@ const AddShippingModal = ({ AddShippingShowModal, setAddShippingShowModal }) => 
           />
 
           <TextField
-            id="IdOrden"
-            label="ID Orden*"
-            value={formik.values.IdOrden}
+            id="IdOrdenOK"
+            label="IdOrdenOK*"
+            value={formik.values.IdOrdenOK}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             fullWidth
             margin="dense"
-            error={formik.touched.IdOrden && Boolean(formik.errors.IdOrden)}
-            helperText={formik.touched.IdOrden && formik.errors.IdOrden}
+            error={formik.touched.IdOrdenOK && Boolean(formik.errors.IdOrdenOK)}
+            helperText={formik.touched.IdOrdenOK && formik.errors.IdOrdenOK}
             disabled={!!mensajeExitoAlert}
           />
+
+          {/* Checkbox para Matriz */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={formik.values.Matriz}
+                onChange={(e) => formik.setFieldValue("Matriz", e.target.checked)}
+                name="Matriz"
+                color="primary"
+              />
+            }
+            label="Matriz"
+          />
         </DialogContent>
-        <DialogActions sx={{ display: "flex", flexDirection: "row" }}>
+        <DialogActions>
           <LoadingButton
             color="secondary"
-            loadingPosition="start"
             startIcon={<CloseIcon />}
             variant="outlined"
-            onClick={() => setAddShippingShowModal(false)}
+            onClick={() => setAddInstituteShowModal(false)}
           >
-            <span>CERRAR</span>
+            CERRAR
           </LoadingButton>
           <LoadingButton
             color="primary"
-            loadingPosition="start"
             startIcon={<SaveIcon />}
             variant="contained"
             type="submit"
             loading={loading}
-            disabled={!!mensajeExitoAlert}
           >
-            <span>GUARDAR</span>
+            GUARDAR
           </LoadingButton>
         </DialogActions>
       </form>

@@ -6,8 +6,8 @@ import Orders from "../ecommerce/orders/pages/Orders";
 import Payments from "../ecommerce/payments/pages/Payments";
 import Shippings from "../ecommerce/shippings/pages/Shippings";
 import Inventories from "../ecommerce/inventories/pages/Inventories";
-import CommerceTable from "../security/commerce/components/tables/CommerceTable";
-import CommerceNavTab from "../security/commerce/components/tabs/CommerceNavTab";
+import ShippingsTable from "../security/commerce/components/tables/ShippingsTable";
+import CommerceNavTab from "../security/commerce/components/tabs/ShippingNavTab";
 //FIC: Share 
 import Error from "../share/errors/pages/Error";
 const router = createBrowserRouter([
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
           element:(
             <div>
             <CommerceNavTab />
-            <CommerceTable /> {/* Muestra la tabla en la página de inicio */}
+            <ShippingsTable /> {/* Muestra la tabla en la página de inicio */}
           </div>
           )
         }
