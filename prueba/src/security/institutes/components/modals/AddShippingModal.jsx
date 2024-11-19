@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { InstituteValues } from "../../helpers/ShippingValues";
+import { ShippingValues } from "../../../institutes/helpers/ShippingValues";
 import { AddOneShipping } from "../../../institutes/services/remote/post/AddOneShipping";
 import {
   Dialog,
