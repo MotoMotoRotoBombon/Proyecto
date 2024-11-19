@@ -1,48 +1,41 @@
+import axios from "axios";
+
+export function getProduct(id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${import.meta.env.VITE_GET_ALL_INVENTORIES_URL}/${id}`)
+            .then((response) => {
+                const data = response.data;
+                if (!data) {
+                    console.info("🛈 No se encontró el producto con ID:", id);
+                    resolve(null);
+                } else {
+                    resolve(data); // Retorna el producto encontrado
+                }
+            })
+            .catch((error) => {
+                console.error("Error en getProduct():", error);
+                reject(error);
+            });
+    });
+}
+    
+
+
 export function getProducts() {
     return new Promise((resolve, reject) => {
-      axios.get(import.meta.env.VITE_CAT_PROD_SERV_URL)
-        .then((response) => {
-          const data = response.data;
-          if (!data.success) {
-            console.error("No se pudo realizar correctamente la petición getProducts():", data);
-            reject(data);
-          } else if (data.data.length === 0) {
-            console.info("🛈 No se encontraron elementos para getProducts():");
-            resolve([]); 
-          } else if (data.success) {
-            const productos = data.data.map((item) => JSON.parse(JSON.stringify(item.dataRes)));
-            console.log("PRODUCTOS", productos);
-            resolve(productos);
-          }
-        })
-        .catch((error) => {
-          console.error("Error en getProducts():", error);
-          reject(error);
-        });
+        axios.get(import.meta.env.VITE_GET_ALL_INVENTORIES_URL)
+            .then((response) => {
+                const data = response.data; // Supone que data contiene los datos
+                if (!data || !data.length) {
+                    console.info("🛈 No se encontraron elementos para getProducts():");
+                    resolve([]);
+                } else {
+                    resolve(data); // Retorna el array completo de productos
+                }
+            })
+            .catch((error) => {
+                console.error("Error en getProducts():", error);
+                reject(error);
+            });
     });
-  }
-  
-  export function getProduct(id) {
-    return new Promise((resolve, reject) => {
-      axios.get(import.meta.env.VITE_CAT_PROD_SERV_URL + id)
-        .then((response) => {
-          const data = response.data;
-          if (!data.success) {
-            console.error("No se pudo realizar correctamente la petición getProduct():", data);
-            reject(data);
-          } else if (data.data.length === 0) {
-            console.info("🛈 No se encontraron elementos para getProduct():");
-            resolve([]);
-          } else if (data.success) {
-            const producto = JSON.parse(JSON.stringify(data.data[0].dataRes));
-            console.log("PRODUCTO", producto);
-            resolve(producto);
-          }
-        })
-        .catch((error) => {
-          console.error("Error en getProduct():", error);
-          reject(error);
-        });
-    });
-  }
-  
+}
