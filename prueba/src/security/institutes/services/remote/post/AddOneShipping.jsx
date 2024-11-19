@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export function AddOneInstitute(institute) {
-    console.log("<<EJECUTA>> API <<AddOneInstitute>> Requiere:", institute);
+export function AddOneShipping(shippings) {
+    console.log("<<EJECUTA>> API <<AddOneInstitute>> Requiere:", shippings);
     return new Promise((resolve, reject) => {
         try {
-            axios.post(import.meta.env.VITE_CAT_INSTITUTES_URL, institute)
+            axios.post(import.meta.env.VITE_CAT_INSTITUTES_URL, shippings)
                 .then((response) => {
                     console.log("<<RESPONSE>> AddOneInstitute", response);
                     // Verifica si el estado de la respuesta es 200
